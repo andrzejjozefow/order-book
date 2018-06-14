@@ -1,0 +1,22 @@
+# K - kupno, S - sprzedaż
+# Nazwa oferenta
+# Ilość sztuk oferty
+# Kwota oferty
+
+K: "Prokom": 10: 7.50
+S: "Witold Wielki": 3: 8.25
+S: "Korzeniowski": 8: 7.15
+S: "Minkiewicz Software": 30: 7.00
+K: "Żabka Delikatesy": 20: 8.10
+K: "Polska Agencja Kosmiczna": 10: 5.80
+S: "Witold Wielki": 6: 7.40
+K: "Softja": 10: 7.00
+K: "Wielkie Księstwo Litewski": 12: 9.05
+S: "Softja": 5: 8.80
+S: "Prokom": 8: 10.00
+K: "Królestwo Polskie": 3: 6.50
+S: "Zbór niebiański": 7: 6.60
+
+
+
+
