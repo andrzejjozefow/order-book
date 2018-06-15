@@ -1,0 +1,1 @@
+"Prokom" -> "Korzeniowski" 8 7.15"Prokom" -> "Minkiewicz Software" 2 7.0"Żabka Delikatesy" -> "Minkiewicz Software" 20 7.0"Softja" -> "Minkiewicz Software" 8 7.0"Wielkie Księstwo Litewski" -> "Witold Wielki" 6 7.4"Wielkie Księstwo Litewski" -> "Softja" 5 8.8"Wielkie Księstwo Litewski" -> "Zbór niebiański" 1 6.6"Softja" -> "Zbór niebiański" 2 6.6

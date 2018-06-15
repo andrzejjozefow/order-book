@@ -1,5 +1,6 @@
 package pl.andrzejjozefow.softja.newversion;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -17,7 +18,7 @@ public class Market {
 
     final List<Deal> deals = new ArrayList<>();
     final PriorityQueue<Order> bids = new PriorityQueue<>(
-        Comparator.comparingDouble(Order::getPrice).reversed()
+        Comparator.comparingDouble(Order::getPrice)
     );
     final PriorityQueue<Order> asks = new PriorityQueue<>(
         Comparator.comparingDouble(Order::getPrice)
@@ -54,13 +55,14 @@ public class Market {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
-                    bidIterator.remove();
+                    ask.setQuantity(0);
                     break;
                 } else {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
+                    bidIterator.remove();
                 }
             }
         }
@@ -69,7 +71,7 @@ public class Market {
         }
     }
 
-    public void performTransactionsFromTxtFile(String path) {
+    public void performOrdersFromTxtFile(String path) {
 
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             stream
@@ -95,9 +97,25 @@ public class Market {
         }
     }
 
-    @Override
-    public String toString() {
-        return "Market{\n" + deals;
+    public void exportTransactionsToTxtFile(String path) throws IOException {
+        FileWriter writer = new FileWriter(path);
+        for (Deal str : deals) {
+            writer.write(String.valueOf(str));
+        }
+        writer.close();
+
+    }
+    
+    public List<Deal> getDeals() {
+        return deals;
+    }
+
+    public PriorityQueue<Order> getBids() {
+        return bids;
+    }
+
+    public PriorityQueue<Order> getAsks() {
+        return asks;
     }
 }
 

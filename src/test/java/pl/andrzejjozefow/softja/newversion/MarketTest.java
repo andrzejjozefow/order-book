@@ -115,4 +115,28 @@ public class MarketTest {
         assertThat(market.getDeals()).isEmpty();
     }
 
+    @Test
+    public void  shouldAddAskToMarketWithAskHavingLoverQuantity(){
+        //given
+        final Market market = new Market();
+        final User john = new User("John");
+        final User peter = new User("Peter");
+        final Order bid = new Order(peter, 2.5, 10);
+        final Order ask = new Order(john, 2.0, 7);
+
+        //when
+        market.submitBid(bid);
+        market.submitAsk(ask);
+
+        //then
+        assertThat(market.getDeals()).containsExactly(new Deal(peter, john, 2.0, 7));
+        assertThat(market.getBids()).containsExactly(new Order(peter, 2.5, 3));
+        assertThat(market.getAsks()).isEmpty();
+
+
+
+    }
+
+
+
 }
