@@ -11,7 +11,7 @@ K: "Żabka Delikatesy": 20: 8.10
 K: "Polska Agencja Kosmiczna": 10: 5.80
 S: "Witold Wielki": 6: 7.40
 K: "Softja": 10: 7.00
-K: "Wielkie Księstwo Litewski": 12: 9.05
+K: "Wielkie Księstwo Litewskie": 12: 9.05
 S: "Softja": 5: 8.80
 S: "Prokom": 8: 10.00
 K: "Królestwo Polskie": 3: 8.50

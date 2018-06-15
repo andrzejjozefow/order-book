@@ -67,6 +67,7 @@ public class Market {
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     bidIterator.remove();
+                    break;
                 }
             } else {
                 break;

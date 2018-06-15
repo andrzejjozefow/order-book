@@ -14,6 +14,6 @@ public class Deal {
         return buyer + " -> " +
             seller +
             " " + quantity +
-            " " + price;
+            " " + String.format("%.2f", price);
     }
 }
