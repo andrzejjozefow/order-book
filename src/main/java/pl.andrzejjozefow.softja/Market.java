@@ -17,36 +17,36 @@ public class Market {
     public List<Deal> getDeals(List<BuyOrder> buyOrders, List<SellOrder> sellOrders){
 
         List<Deal> deals = new ArrayList<>();
-        List<BuyOrder> buyOrdersTemp = new ArrayList<>();
-        List<SellOrder> sellOrdersTemp = new ArrayList<>();
-        buyOrdersTemp.addAll(buyOrders);
-        sellOrdersTemp.addAll(sellOrders);
+        List<BuyOrder> bids = new ArrayList<>();
+        List<SellOrder> asks = new ArrayList<>();
+        bids.addAll(buyOrders);
+        asks.addAll(sellOrders);
 
-        for(BuyOrder buyOrderTemp: buyOrdersTemp) {
-            for (SellOrder sellOrder : sellOrdersTemp) {
-                if (sellOrder.getPrice().compareTo(buyOrderTemp.getPrice()) <=0 && sellOrder.getQuantity() > 0) {
-                    if (buyOrderTemp.getQuantity() > 0 ) {
-                        if (sellOrder.getQuantity() <= buyOrderTemp.getQuantity()) {
+        for(BuyOrder bid: bids) {
+            for (SellOrder ask : asks) {
+                if (ask.getPrice().compareTo(bid.getPrice()) <=0 && ask.getQuantity() > 0) {
+                    if (bid.getQuantity() > 0 ) {
+                        if (ask.getQuantity() <= bid.getQuantity()) {
                             final Deal deal = new Deal(
-                                sellOrder.getName(),
-                                buyOrderTemp.getName(),
-                                sellOrder.getQuantity(),
-                                sellOrder.getPrice()
+                                ask.getName(),
+                                bid.getName(),
+                                ask.getQuantity(),
+                                ask.getPrice()
                             );
                             deals.add(deal);
-                            buyOrderTemp.setQuantity(
-                                buyOrderTemp.getQuantity() - sellOrder.getQuantity());
-                            sellOrder.setQuantity(0);
+                            bid.setQuantity(
+                                bid.getQuantity() - ask.getQuantity());
+                            ask.setQuantity(0);
                         } else {
                             final Deal deal = new Deal(
-                                sellOrder.getName(),
-                                buyOrderTemp.getName(),
-                                buyOrderTemp.getQuantity(),
-                                sellOrder.getPrice());
+                                ask.getName(),
+                                bid.getName(),
+                                bid.getQuantity(),
+                                ask.getPrice());
                             deals.add(deal);
-                            sellOrder.setQuantity(
-                                sellOrder.getQuantity() - buyOrderTemp.getQuantity());
-                            buyOrderTemp.setQuantity(0);
+                            ask.setQuantity(
+                                ask.getQuantity() - bid.getQuantity());
+                            bid.setQuantity(0);
                         }
                     }
                 }
