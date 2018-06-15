@@ -1,4 +1,4 @@
-package pl.andrzejjozefow.softja.newversion;
+package pl.andrzejjozefow.orderbook;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -7,7 +7,7 @@ import org.junit.Test;
 public class MarketTest {
 
     @Test
-    public void shouldAddAskWhenMarketIsEmpty(){
+    public void shouldAddAskWhenMarketIsEmpty() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -19,7 +19,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidWhenMarketIsEmpty(){
+    public void shouldAddBidWhenMarketIsEmpty() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -31,7 +31,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidToMarketWithAskHavingSamePriceAndQuantity(){
+    public void shouldAddBidToMarketWithAskHavingSamePriceAndQuantity() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -48,7 +48,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidToMarketWithAskHavingLowerPriceAndSameQuantity(){
+    public void shouldAddBidToMarketWithAskHavingLowerPriceAndSameQuantity() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -65,7 +65,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidToMarketWithAskHavingSamePriceAndLowerQuantity(){
+    public void shouldAddBidToMarketWithAskHavingSamePriceAndLowerQuantity() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -82,7 +82,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidToMarketWithAskHavingSamePriceAndBiggerQuantity(){
+    public void shouldAddBidToMarketWithAskHavingSamePriceAndBiggerQuantity() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -99,7 +99,7 @@ public class MarketTest {
     }
 
     @Test
-    public void shouldAddBidToMarketWithAskHavingBiggerPrice(){
+    public void shouldAddBidToMarketWithAskHavingBiggerPrice() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -116,7 +116,7 @@ public class MarketTest {
     }
 
     @Test
-    public void  shouldAddAskToMarketWithAskHavingLoverQuantity(){
+    public void shouldAddAskToMarketWithAskHavingLoverQuantity() {
         //given
         final Market market = new Market();
         final User john = new User("John");
@@ -132,11 +132,5 @@ public class MarketTest {
         assertThat(market.getDeals()).containsExactly(new Deal(peter, john, 2.0, 7));
         assertThat(market.getBids()).containsExactly(new Order(peter, 2.5, 3));
         assertThat(market.getAsks()).isEmpty();
-
-
-
     }
-
-
-
 }

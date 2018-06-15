@@ -1,4 +1,4 @@
-package pl.andrzejjozefow.softja.newversion;
+package pl.andrzejjozefow.orderbook;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -99,13 +99,16 @@ public class Market {
 
     public void exportTransactionsToTxtFile(String path) throws IOException {
         FileWriter writer = new FileWriter(path);
-        for (Deal str : deals) {
-            writer.write(String.valueOf(str));
-        }
+        deals.forEach(line ->{
+            try {
+                writer.write(String.valueOf(line)+ "\n");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
         writer.close();
-
     }
-    
+
     public List<Deal> getDeals() {
         return deals;
     }
