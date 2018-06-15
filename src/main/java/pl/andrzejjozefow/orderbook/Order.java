@@ -14,7 +14,6 @@ public class Order {
     private Integer quantity;
 
 
-
     @Override
     public String toString() {
         return " " + price;

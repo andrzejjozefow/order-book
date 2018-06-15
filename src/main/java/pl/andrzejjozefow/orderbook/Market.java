@@ -41,6 +41,8 @@ public class Market {
                     bid.setQuantity(0);
                     break;
                 }
+            } else {
+                break;
             }
         }
         if (bid.getQuantity() > 0) {
@@ -66,6 +68,8 @@ public class Market {
                     bid.setQuantity(0);
                     bidIterator.remove();
                 }
+            } else {
+                break;
             }
         }
         if (ask.getQuantity() > 0) {
@@ -79,23 +83,25 @@ public class Market {
             stream
                 .filter(line -> !line.startsWith("#"))
                 .filter(line -> !line.contentEquals(""))
-                .forEach(line -> {
-                    if (line.startsWith("K")) {
-                        List<String> orderPieces = Arrays.asList(line.split(":"));
-                        final Order bid = new Order(new User(orderPieces.get(1).trim()),
-                            Double.valueOf(orderPieces.get(3).trim()),
-                            Integer.valueOf(orderPieces.get(2).trim()));
-                        submitBid(bid);
-                    } else {
-                        List<String> orderPieces = Arrays.asList(line.split(":"));
-                        final Order ask = new Order(new User(orderPieces.get(1).trim()),
-                            Double.valueOf(orderPieces.get(3).trim()),
-                            Integer.valueOf(orderPieces.get(2).trim()));
-                        submitAsk(ask);
-                    }
-                });
+                .forEach(this::from);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void from(String line){
+        if (line.startsWith("K")) {
+            List<String> orderPieces = Arrays.asList(line.split(":"));
+            final Order bid = new Order(new User(orderPieces.get(1).trim()),
+                Double.valueOf(orderPieces.get(3).trim()),
+                Integer.valueOf(orderPieces.get(2).trim()));
+            submitBid(bid);
+        } else {
+            List<String> orderPieces = Arrays.asList(line.split(":"));
+            final Order ask = new Order(new User(orderPieces.get(1).trim()),
+                Double.valueOf(orderPieces.get(3).trim()),
+                Integer.valueOf(orderPieces.get(2).trim()));
+            submitAsk(ask);
         }
     }
 
@@ -110,6 +116,7 @@ public class Market {
         });
         writer.close();
     }
+
 
     public List<Deal> getDeals() {
         return deals;

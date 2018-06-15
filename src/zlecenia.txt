@@ -14,7 +14,7 @@ K: "Softja": 10: 7.00
 K: "Wielkie Księstwo Litewski": 12: 9.05
 S: "Softja": 5: 8.80
 S: "Prokom": 8: 10.00
-K: "Królestwo Polskie": 3: 6.50
+K: "Królestwo Polskie": 3: 8.50
 S: "Zbór niebiański": 7: 6.60
 
 
