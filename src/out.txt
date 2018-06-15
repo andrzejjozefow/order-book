@@ -3,6 +3,6 @@
 "Żabka Delikatesy" -> "Minkiewicz Software" 20 7.0
 "Softja" -> "Minkiewicz Software" 8 7.0
 "Wielkie Księstwo Litewski" -> "Witold Wielki" 6 7.4
-"Wielkie Księstwo Litewski" -> "Softja" 5 8.8
-"Wielkie Księstwo Litewski" -> "Zbór niebiański" 1 6.6
+"Wielkie Księstwo Litewski" -> "Witold Wielki" 3 8.25
+"Wielkie Księstwo Litewski" -> "Softja" 3 8.8
 "Softja" -> "Zbór niebiański" 2 6.6

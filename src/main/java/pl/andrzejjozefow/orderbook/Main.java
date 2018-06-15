@@ -9,7 +9,7 @@ public class Main {
         final Market market = new Market();
 
         market.performOrdersFromTxtFile("src/zlecenia.txt");
-        System.out.println(market.getDeals());
+        System.out.println(market.getAsks());
 
         market.exportTransactionsToTxtFile("src/out.txt");
 

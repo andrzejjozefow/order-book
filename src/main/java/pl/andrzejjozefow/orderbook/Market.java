@@ -6,10 +6,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
+import java.util.TreeSet;
 import java.util.stream.Stream;
 import lombok.Data;
 
@@ -17,10 +18,10 @@ import lombok.Data;
 public class Market {
 
     final List<Deal> deals = new ArrayList<>();
-    final PriorityQueue<Order> bids = new PriorityQueue<>(
-        Comparator.comparingDouble(Order::getPrice)
+    final Collection<Order> bids = new TreeSet<>(
+        Comparator.comparingDouble(Order::getPrice).reversed()
     );
-    final PriorityQueue<Order> asks = new PriorityQueue<>(
+    final Collection<Order> asks = new TreeSet<>(
         Comparator.comparingDouble(Order::getPrice)
     );
 
@@ -33,12 +34,12 @@ public class Market {
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
-                    break;
                 } else {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
+                    break;
                 }
             }
         }
@@ -57,6 +58,7 @@ public class Market {
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     ask.setQuantity(0);
                     break;
+
                 } else {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
@@ -113,11 +115,11 @@ public class Market {
         return deals;
     }
 
-    public PriorityQueue<Order> getBids() {
+    public Collection<Order> getBids() {
         return bids;
     }
 
-    public PriorityQueue<Order> getAsks() {
+    public Collection<Order> getAsks() {
         return asks;
     }
 }
