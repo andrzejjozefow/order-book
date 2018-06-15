@@ -1,9 +1,6 @@
 package pl.andrzejjozefow.orderbook;
 
 import static org.assertj.core.api.Assertions.*;
-
-import com.sun.org.apache.xpath.internal.operations.Or;
-import javax.jws.soap.SOAPBinding.Use;
 import org.junit.Test;
 
 public class MarketTest {

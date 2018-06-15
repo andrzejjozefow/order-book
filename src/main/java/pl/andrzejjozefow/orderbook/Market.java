@@ -1,9 +1,9 @@
 package pl.andrzejjozefow.orderbook;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,8 +11,9 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.stream.Stream;
+import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.SneakyThrows;
 
 @Data
 public class Market {
@@ -28,15 +29,17 @@ public class Market {
     public void submitBid(final Order bid) {
         for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
-            if (ask.getPrice() <= bid.getPrice()) {
-                if (bid.getQuantity() >= ask.getQuantity()) {
+            if (ask.getPrice() <= bid.getPrice()) { //TODO wydzielić funkcje
+                if (bid.getQuantity() >= ask.getQuantity()) {  //TODO wydzielić funkcje
                     deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity())
+                    );
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
                 } else {
                     deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity())
+                    );
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     break;
@@ -60,7 +63,6 @@ public class Market {
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     ask.setQuantity(0);
                     break;
-
                 } else {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
@@ -78,16 +80,12 @@ public class Market {
         }
     }
 
-    public void performOrdersFromTxtFile(String path) {
-
-        try (Stream<String> stream = Files.lines(Paths.get(path))) {
-            stream
+    @SneakyThrows(IOException.class)
+    public void performOrdersFromTxtFile(String path) { //TODO przekazywqać beposrednio path
+        Files.lines(Paths.get(path))
                 .filter(line -> !line.startsWith("#"))
                 .filter(line -> !line.contentEquals(""))
                 .forEach(this::from);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void from(String line){
@@ -106,18 +104,13 @@ public class Market {
         }
     }
 
-    public void exportTransactionsToTxtFile(String path) throws IOException {
-        FileWriter writer = new FileWriter(path);
-        deals.forEach(line ->{
-            try {
-                writer.write(String.valueOf(line)+ "\n");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-        writer.close();
+    @SneakyThrows(IOException.class)
+    public void exportTransactionsToTxtFile(String path){
+        final List<String> lines = deals.stream()
+            .map(Deal::toString)
+            .collect(Collectors.toList());
+        Files.write(Paths.get(path), lines, StandardOpenOption.CREATE);
     }
-
 
     public List<Deal> getDeals() {
         return deals;
