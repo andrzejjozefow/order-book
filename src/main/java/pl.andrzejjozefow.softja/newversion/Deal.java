@@ -8,4 +8,12 @@ public class Deal {
     final User seller;
     final Double price;
     final Integer quantity;
+
+    @Override
+    public String toString() {
+        return buyer + " -> " +
+            seller +
+            " " + quantity +
+            " " + price;
+    }
 }

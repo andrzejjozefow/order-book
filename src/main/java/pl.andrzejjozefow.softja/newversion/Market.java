@@ -23,53 +23,60 @@ public class Market {
         Comparator.comparingDouble(Order::getPrice)
     );
 
-    public void submitBid(final Order bid){
-        for(Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext();){
+    public void submitBid(final Order bid) {
+        for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
-            if(ask.getPrice() <= bid.getPrice()){
-                if(bid.getQuantity() >= ask.getQuantity()){
-                    deals.add(new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
+            if (ask.getPrice() <= bid.getPrice()) {
+                if (bid.getQuantity() >= ask.getQuantity()) {
+                    deals.add(
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
                     break;
                 } else {
-                    deals.add(new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
+                    deals.add(
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                 }
             }
         }
-        if(bid.getQuantity() > 0) {
+        if (bid.getQuantity() > 0) {
             bids.add(bid);
         }
     }
-    public void submitAsk(final Order ask){
-        for(Iterator<Order> bidIterator = bids.iterator(); bidIterator.hasNext();){
-            Order bid = bidIterator.next();
-            if(bid.getQuantity() >= ask.getQuantity()){
-                deals.add(new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
-                bid.setQuantity(bid.getQuantity() - ask.getQuantity());
-                bidIterator.remove();
-                break;
-            } else {
-                deals.add(new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
-                ask.setQuantity(ask.getQuantity() - bid.getQuantity());
-                bid.setQuantity(0);
+
+    public void submitAsk(final Order ask) {
+        for (Iterator<Order> bidIterator = bids.iterator(); bidIterator.hasNext(); ) {
+            final Order bid = bidIterator.next();
+            if (ask.getPrice() <= bid.getPrice()) {
+                if (bid.getQuantity() >= ask.getQuantity()) {
+                    deals.add(
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
+                    bid.setQuantity(bid.getQuantity() - ask.getQuantity());
+                    bidIterator.remove();
+                    break;
+                } else {
+                    deals.add(
+                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
+                    ask.setQuantity(ask.getQuantity() - bid.getQuantity());
+                    bid.setQuantity(0);
+                }
             }
         }
-        if(ask.getQuantity() > 0) {
+        if (ask.getQuantity() > 0) {
             asks.add(ask);
         }
     }
 
-    public void performTransaktonsFromTxtFile(String path){
+    public void performTransactionsFromTxtFile(String path) {
 
         try (Stream<String> stream = Files.lines(Paths.get(path))) {
             stream
                 .filter(line -> !line.startsWith("#"))
                 .filter(line -> !line.contentEquals(""))
                 .forEach(line -> {
-                    if(line.startsWith("K")){
+                    if (line.startsWith("K")) {
                         List<String> orderPieces = Arrays.asList(line.split(":"));
                         final Order bid = new Order(new User(orderPieces.get(1).trim()),
                             Double.valueOf(orderPieces.get(3).trim()),
@@ -86,6 +93,11 @@ public class Market {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Market{\n" + deals;
     }
 }
 

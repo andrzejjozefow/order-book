@@ -6,9 +6,8 @@ public class Main {
 
         final Market market = new Market();
 
-        market.performTransaktonsFromTxtFile("src/zlecenia.txt");
-
-        System.out.println(market);
+        market.performTransactionsFromTxtFile("src/zlecenia.txt");
+        
     }
 
 }

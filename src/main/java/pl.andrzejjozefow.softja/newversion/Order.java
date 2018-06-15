@@ -9,4 +9,13 @@ public class Order {
     private final User user;
     private final Double price;
     private Integer quantity;
+
+    @Override
+    public String toString() {
+        return "Order{" +
+            "user=" + user +
+            ", price=" + price +
+            ", quantity=" + quantity +
+            '}';
+    }
 }

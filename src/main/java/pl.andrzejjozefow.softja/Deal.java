@@ -24,6 +24,6 @@ public class Deal {
         return buyerName + " -> " +
             sellerName +
             " " + quantity +
-            " " + price;
+            " " + price + "\n";
     }
 }
