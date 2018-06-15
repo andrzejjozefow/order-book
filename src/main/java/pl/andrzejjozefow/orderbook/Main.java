@@ -10,7 +10,7 @@ public class Main {
 
         market.performOrdersFromTxtFile("src/zlecenia.txt");
 
-        System.out.println(market.getAsks());
+        System.out.println(market.getDeals());
 
         market.exportTransactionsToTxtFile("src/out.txt");
     }
