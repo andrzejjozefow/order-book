@@ -6,13 +6,13 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        final Market market = new Market();
+        final MarketService marketService = new MarketService();
 
-        market.performOrdersFromTxtFile("src/zlecenia.txt");
+        marketService.performOrdersFromTxtFile("src/zlecenia.txt");
 
-        System.out.println(market.getDeals());
+        System.out.println(marketService.getDeals());
 
-        market.exportTransactionsToTxtFile("src/out.txt");
+        marketService.exportTransactionsToTxtFile("src/out.txt");
     }
 
 }

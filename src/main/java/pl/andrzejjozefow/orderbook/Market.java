@@ -13,24 +13,25 @@ import java.util.List;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 @Data
 public class Market {
 
-    final List<Deal> deals = new ArrayList<>();
-    final Collection<Order> bids = new TreeSet<>(
+    private final List<Deal> deals = new ArrayList<>();
+    private final Collection<Order> bids = new TreeSet<>(
         Comparator.comparingDouble(Order::getPrice).reversed()
     );
-    final Collection<Order> asks = new TreeSet<>(
+    private final Collection<Order> asks = new TreeSet<>(
         Comparator.comparingDouble(Order::getPrice)
     );
 
     public void submitBid(final Order bid) {
         for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
-            if (ask.getPrice() <= bid.getPrice()) { //TODO wydzielić funkcje
-                if (bid.getQuantity() >= ask.getQuantity()) {  //TODO wydzielić funkcje
+            if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
+                if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {  //TODO wydzielić funkcje
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity())
                     );
@@ -56,8 +57,8 @@ public class Market {
     public void submitAsk(final Order ask) {
         for (Iterator<Order> bidIterator = bids.iterator(); bidIterator.hasNext(); ) {
             final Order bid = bidIterator.next();
-            if (ask.getPrice() <= bid.getPrice()) {
-                if (bid.getQuantity() >= ask.getQuantity()) {
+            if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
+                if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
@@ -80,36 +81,12 @@ public class Market {
         }
     }
 
-    @SneakyThrows(IOException.class)
-    public void performOrdersFromTxtFile(String path) { //TODO przekazywqać beposrednio path
-        Files.lines(Paths.get(path))
-                .filter(line -> !line.startsWith("#"))
-                .filter(line -> !line.contentEquals(""))
-                .forEach(this::from);
+    private boolean isBidQuantityEqualOrBiggerThanAskQuantity(Order bid, Order ask) {
+        return bid.getQuantity() >= ask.getQuantity();
     }
 
-    private void from(String line){
-        if (line.startsWith("K")) {
-            List<String> orderPieces = Arrays.asList(line.split(":"));
-            final Order bid = new Order(new User(orderPieces.get(1).trim()),
-                Double.valueOf(orderPieces.get(3).trim()),
-                Integer.valueOf(orderPieces.get(2).trim()));
-            submitBid(bid);
-        } else {
-            List<String> orderPieces = Arrays.asList(line.split(":"));
-            final Order ask = new Order(new User(orderPieces.get(1).trim()),
-                Double.valueOf(orderPieces.get(3).trim()),
-                Integer.valueOf(orderPieces.get(2).trim()));
-            submitAsk(ask);
-        }
-    }
-
-    @SneakyThrows(IOException.class)
-    public void exportTransactionsToTxtFile(String path){
-        final List<String> lines = deals.stream()
-            .map(Deal::toString)
-            .collect(Collectors.toList());
-        Files.write(Paths.get(path), lines, StandardOpenOption.CREATE);
+    private boolean isBidPriceEqualOrBiggerThanAskPrice(Order bid, Order ask) {
+        return ask.getPrice() <= bid.getPrice();
     }
 
     public List<Deal> getDeals() {
