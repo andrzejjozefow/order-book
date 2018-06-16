@@ -11,7 +11,8 @@ public class Main {
 
         marketService.performOrdersFromTxtFile(Paths.get("src/zlecenia.txt"));
 
-        System.out.println(marketService.getDeals());
+        System.out.println(marketService.getAsks());
+        System.out.println(marketService.getBids());
 
         marketService.exportTransactionsToTxtFile(Paths.get("src/out.txt"));
     }

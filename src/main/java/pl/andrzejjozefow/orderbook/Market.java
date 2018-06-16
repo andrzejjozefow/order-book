@@ -13,17 +13,17 @@ public class Market {
 
     private final List<Deal> deals = new ArrayList<>();
     private final Collection<Order> bids = new TreeSet<>(
-        Comparator.comparingDouble(Order::getPrice).reversed()
+        Comparator.comparing(Order::getPrice).reversed()
     );
     private final Collection<Order> asks = new TreeSet<>(
-        Comparator.comparingDouble(Order::getPrice)
+        Comparator.comparing(Order::getPrice)
     );
 
     public void submitBid(final Order bid) {
         for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
-                if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {  //TODO wydzielić funkcje
+                if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
                     deals.add(
                         new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity())
                     );
@@ -78,7 +78,7 @@ public class Market {
     }
 
     private boolean isBidPriceEqualOrBiggerThanAskPrice(Order bid, Order ask) {
-        return ask.getPrice() <= bid.getPrice();
+        return ask.getPrice().compareTo(bid.getPrice()) <= 0;
     }
 
     public List<Deal> getDeals() {

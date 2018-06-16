@@ -1,5 +1,6 @@
 package pl.andrzejjozefow.orderbook;
 
+import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Order {
     private final User user;
-    private final Double price;
+    private final BigDecimal price;
     private Integer quantity;
 
 
