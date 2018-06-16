@@ -2,7 +2,7 @@ package pl.andrzejjozefow.orderbook;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,27 +14,27 @@ public class MarketService {
     private final OrderFactory orderFactory = new OrderFactory();
 
     @SneakyThrows(IOException.class)
-    public void performOrdersFromTxtFile(String path) { //TODO przekazywqać beposrednio path
-        Files.lines(Paths.get(path))
+    public void performOrdersFromTxtFile(Path path){
+        Files.lines(path)
             .filter(line -> !line.startsWith("#"))
             .filter(line -> !line.contentEquals(""))
-            .forEach(this::from);
+            .forEach(this::passToSubmit);
     }
 
-    private void from(String line){
+    private void passToSubmit(String line){
         if (line.startsWith("K")) {
             market.submitBid(orderFactory.getOrder(line));
-        } else {
+        } else if (line.startsWith("S")){
             market.submitAsk(orderFactory.getOrder(line));
         }
     }
 
     @SneakyThrows(IOException.class)
-    public void exportTransactionsToTxtFile(String path){
+    public void exportTransactionsToTxtFile(Path path){
         final List<String> lines = market.getDeals().stream()
             .map(Deal::toString)
             .collect(Collectors.toList());
-        Files.write(Paths.get(path), lines, StandardOpenOption.CREATE);
+        Files.write(path, lines, StandardOpenOption.CREATE);
     }
 
     public List<Deal> getDeals(){

@@ -1,6 +1,7 @@
 package pl.andrzejjozefow.orderbook;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class Main {
 
@@ -8,11 +9,11 @@ public class Main {
 
         final MarketService marketService = new MarketService();
 
-        marketService.performOrdersFromTxtFile("src/zlecenia.txt");
+        marketService.performOrdersFromTxtFile(Paths.get("src/zlecenia.txt"));
 
         System.out.println(marketService.getDeals());
 
-        marketService.exportTransactionsToTxtFile("src/out.txt");
+        marketService.exportTransactionsToTxtFile(Paths.get("src/out.txt"));
     }
 
 }
