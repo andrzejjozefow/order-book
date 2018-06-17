@@ -48,7 +48,6 @@ marketService.exportTransactionsToTxtFile(Paths.get("src/out.txt"));
 ```
 
 
-
 ## Test performing sample orders
 
 ```java
