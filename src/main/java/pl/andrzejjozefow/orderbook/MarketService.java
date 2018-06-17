@@ -2,7 +2,6 @@ package pl.andrzejjozefow.orderbook;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
@@ -20,12 +19,12 @@ public class MarketService {
 
     @SneakyThrows(IOException.class)
     public void performOrdersFromTxtFile(Path path){
-        try {
+        if(Files.exists(path)){
             Files.lines(path)
                 .filter(line -> !line.startsWith("#"))
                 .filter(line -> !line.contentEquals(""))
                 .forEach(this::passToSubmit);
-        } catch (NoSuchFileException e){
+        } else {
             log.warning("File zlecenia.txt not found");
         }
     }
@@ -36,14 +35,13 @@ public class MarketService {
             .map(Deal::toString)
             .collect(Collectors.toList());
         Files.write(path, lines, StandardOpenOption.CREATE);
-        log.info("Deal list exported to out.txt");
+        log.info("Deal list exported to out.txt file");
     }
 
     private void passToSubmit(String line){
         if (line.startsWith("K")) {
             Optional<Order> bid = orderFactory.getOrder(line);
             bid.ifPresent(market::submitBid);
-
         } else if (line.startsWith("S")){
             Optional<Order> ask = orderFactory.getOrder(line);
             ask.ifPresent(market::submitAsk);
