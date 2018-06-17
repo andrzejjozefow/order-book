@@ -10,7 +10,7 @@
 Clone
 
 ```
-git clone http://
+git clone https://github.com/andrzejjozefow/order-book.git
 ```
 
 Build
