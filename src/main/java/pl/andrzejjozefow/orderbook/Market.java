@@ -1,17 +1,16 @@
 package pl.andrzejjozefow.orderbook;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.Data;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
-@Log
+@Slf4j
 public class Market {
 
     private final List<Deal> deals = new ArrayList<>();
@@ -22,8 +21,21 @@ public class Market {
         Comparator.comparing(Order::getPrice)
     );
 
-    public void submitBid(final Order bid) {
-        log.info("New buy order: " + bid);
+    public void submitOrder(final Order order) {
+        switch (order.getOrderType()) {
+            case BID:
+                submitBid(order);
+                break;
+            case ASK:
+                submitAsk(order);
+                break;
+            default:
+                throw new IllegalArgumentException("Illegal order:" + order);
+        }
+    }
+
+    private void submitBid(final Order bid) {
+        log.info("New buy order: {}", bid);
         for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
@@ -32,7 +44,7 @@ public class Market {
                         bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()
                     );
                     deals.add(deal);
-                    log.info("New deal: " + deal);
+                    log.info("New deal: {}", deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
                 } else {
@@ -40,7 +52,7 @@ public class Market {
                         bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()
                     );
                     deals.add(deal);
-                    log.info("New deal: " + deal);
+                    log.info("New deal: {}", deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     break;
@@ -54,8 +66,8 @@ public class Market {
         }
     }
 
-    public void submitAsk(final Order ask) {
-        log.info("New sell order" + ask);
+    private void submitAsk(final Order ask) {
+        log.info("New sell order: {}", ask);
         for (Iterator<Order> bidIterator = bids.iterator(); bidIterator.hasNext(); ) {
             final Order bid = bidIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
@@ -64,7 +76,7 @@ public class Market {
                         bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()
                     );
                     deals.add(deal);
-                    log.info("New deal: " + deal);
+                    log.info("New deal: {}", deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     ask.setQuantity(0);
                     break;
@@ -73,7 +85,7 @@ public class Market {
                         bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()
                     );
                     deals.add(deal);
-                    log.info("New deal: " + deal);
+                    log.info("New deal: {}", deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     bidIterator.remove();
@@ -88,24 +100,12 @@ public class Market {
         }
     }
 
-    private boolean isBidQuantityEqualOrBiggerThanAskQuantity(Order bid, Order ask) {
+    private boolean isBidQuantityEqualOrBiggerThanAskQuantity(final Order bid, final Order ask) {
         return bid.getQuantity() >= ask.getQuantity();
     }
 
-    private boolean isBidPriceEqualOrBiggerThanAskPrice(Order bid, Order ask) {
+    private boolean isBidPriceEqualOrBiggerThanAskPrice(final Order bid, final Order ask) {
         return ask.getPrice().compareTo(bid.getPrice()) <= 0;
-    }
-
-    public List<Deal> getDeals() {
-        return deals;
-    }
-
-    public Collection<Order> getBids() {
-        return bids;
-    }
-
-    public Collection<Order> getAsks() {
-        return asks;
     }
 }
 

@@ -10,7 +10,7 @@
 Clone
 
 ```
-git clone https://github.com/andrzejjozefow/order-book.git
+git clone http://
 ```
 
 Build
@@ -28,7 +28,7 @@ mvn clean install
 In order to use order-book you should instatiate MarketService object:
 
 ```java
-final MarketService marketService = new MarketService();
+final MarketApp marketApp = new MarketApp(new Market(), new OrderParser());
 ```
 
 
