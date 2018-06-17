@@ -27,7 +27,7 @@ mvn clean install
 
 In order to use order-book you should instatiate MarketService object:
 
-```
+```java
 final MarketService marketService = new MarketService();
 ```
 
@@ -35,7 +35,7 @@ final MarketService marketService = new MarketService();
 
 Performing orders from txt file:
 
-```
+```java
 marketService.performOrdersFromTxtFile(Paths.get("src/zlecenia.txt"));
 ```
 
@@ -43,7 +43,7 @@ marketService.performOrdersFromTxtFile(Paths.get("src/zlecenia.txt"));
 
 Writing matched options to txt file:
 
-```
+```java
 marketService.exportTransactionsToTxtFile(Paths.get("src/out.txt"));
 ```
 
@@ -51,7 +51,7 @@ marketService.exportTransactionsToTxtFile(Paths.get("src/out.txt"));
 
 ## Test performing sample orders
 
-```
+```java
 @Test
     public void shouldProcessAllExampleTransactions(){
         //given
