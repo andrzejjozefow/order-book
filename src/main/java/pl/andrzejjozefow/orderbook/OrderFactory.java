@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import lombok.extern.java.Log;
 
-
 @Log
 public class OrderFactory {
 
