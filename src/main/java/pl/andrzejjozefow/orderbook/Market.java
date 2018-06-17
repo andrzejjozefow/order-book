@@ -28,13 +28,17 @@ public class Market {
             final Order ask = askIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
                 if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
-                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity());
+                    final Deal deal = new Deal(
+                        bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()
+                    );
                     deals.add(deal);
                     log.info("New deal: " + deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
                 } else {
-                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity());
+                    final Deal deal = new Deal(
+                        bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()
+                    );
                     deals.add(deal);
                     log.info("New deal: " + deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
@@ -56,14 +60,18 @@ public class Market {
             final Order bid = bidIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
                 if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
-                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity());
+                    final Deal deal = new Deal(
+                        bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()
+                    );
                     deals.add(deal);
                     log.info("New deal: " + deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     ask.setQuantity(0);
                     break;
                 } else {
-                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity());
+                    final Deal deal = new Deal(
+                        bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()
+                    );
                     deals.add(deal);
                     log.info("New deal: " + deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());

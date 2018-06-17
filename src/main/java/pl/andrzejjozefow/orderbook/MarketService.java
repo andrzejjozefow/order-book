@@ -36,7 +36,7 @@ public class MarketService {
             .map(Deal::toString)
             .collect(Collectors.toList());
         Files.write(path, lines, StandardOpenOption.CREATE);
-        log.info("Deals list exported to out.txt");
+        log.info("Deal list exported to out.txt");
     }
 
     private void passToSubmit(String line){
