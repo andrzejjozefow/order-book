@@ -12,9 +12,6 @@ public class Deal {
 
     @Override
     public String toString() {
-        return buyer + " -> " +
-            seller +
-            " " + quantity +
-            " " + String.format("%.2f", price);
+        return String.format("%s -> %s %s %.2f", buyer, seller, quantity, price);
     }
 }

@@ -2,13 +2,17 @@ package pl.andrzejjozefow.orderbook;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.SneakyThrows;
+import lombok.extern.java.Log;
 
+@Log
 public class MarketService {
 
     private final Market market = new Market();
@@ -16,25 +20,33 @@ public class MarketService {
 
     @SneakyThrows(IOException.class)
     public void performOrdersFromTxtFile(Path path){
-        Files.lines(path)
-            .filter(line -> !line.startsWith("#"))
-            .filter(line -> !line.contentEquals(""))
-            .forEach(this::passToSubmit);
+        try {
+            Files.lines(path)
+                .filter(line -> !line.startsWith("#"))
+                .filter(line -> !line.contentEquals(""))
+                .forEach(this::passToSubmit);
+        } catch (NoSuchFileException e){
+            log.warning("File zlecenia.txt not found");
+        }
     }
 
-    @SneakyThrows(IOException.class)
+    @SneakyThrows(IOException.class )
     public void exportTransactionsToTxtFile(Path path){
         final List<String> lines = market.getDeals().stream()
             .map(Deal::toString)
             .collect(Collectors.toList());
         Files.write(path, lines, StandardOpenOption.CREATE);
+        log.info("Deals list exported to out.txt");
     }
 
     private void passToSubmit(String line){
         if (line.startsWith("K")) {
-            market.submitBid(orderFactory.getOrder(line));
+            Optional<Order> bid = orderFactory.getOrder(line);
+            bid.ifPresent(market::submitBid);
+
         } else if (line.startsWith("S")){
-            market.submitAsk(orderFactory.getOrder(line));
+            Optional<Order> ask = orderFactory.getOrder(line);
+            ask.ifPresent(market::submitAsk);
         }
     }
 

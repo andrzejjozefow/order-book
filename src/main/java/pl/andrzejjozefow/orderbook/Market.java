@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.Data;
+import lombok.extern.java.Log;
 
 @Data
+@Log
 public class Market {
 
     private final List<Deal> deals = new ArrayList<>();
@@ -21,19 +23,20 @@ public class Market {
     );
 
     public void submitBid(final Order bid) {
+        log.info("New buy order: " + bid);
         for (Iterator<Order> askIterator = asks.iterator(); askIterator.hasNext(); ) {
             final Order ask = askIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
                 if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
-                    deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity())
-                    );
+                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity());
+                    deals.add(deal);
+                    log.info("New deal: " + deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     askIterator.remove();
                 } else {
-                    deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity())
-                    );
+                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity());
+                    deals.add(deal);
+                    log.info("New deal: " + deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     break;
@@ -48,18 +51,21 @@ public class Market {
     }
 
     public void submitAsk(final Order ask) {
+        log.info("New sell order" + ask);
         for (Iterator<Order> bidIterator = bids.iterator(); bidIterator.hasNext(); ) {
             final Order bid = bidIterator.next();
             if (isBidPriceEqualOrBiggerThanAskPrice(bid, ask)) {
                 if (isBidQuantityEqualOrBiggerThanAskQuantity(bid, ask)) {
-                    deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity()));
+                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), ask.getQuantity());
+                    deals.add(deal);
+                    log.info("New deal: " + deal);
                     bid.setQuantity(bid.getQuantity() - ask.getQuantity());
                     ask.setQuantity(0);
                     break;
                 } else {
-                    deals.add(
-                        new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity()));
+                    final Deal deal = new Deal(bid.getUser(), ask.getUser(), ask.getPrice(), bid.getQuantity());
+                    deals.add(deal);
+                    log.info("New deal: " + deal);
                     ask.setQuantity(ask.getQuantity() - bid.getQuantity());
                     bid.setQuantity(0);
                     bidIterator.remove();

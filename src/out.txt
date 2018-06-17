@@ -6,3 +6,4 @@
 "Wielkie Księstwo Litewskie" -> "Witold Wielki" 3 8,25
 "Wielkie Księstwo Litewskie" -> "Softja" 3 8,80
 "Królestwo Polskie" -> "Zbór niebiański" 3 6,60
+
