@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import lombok.Data;
 
@@ -12,10 +13,10 @@ import lombok.Data;
 public class Market {
 
     private final List<Deal> deals = new ArrayList<>();
-    private final Collection<Order> bids = new TreeSet<>(
+    private final SortedSet<Order> bids = new TreeSet<>(
         Comparator.comparing(Order::getPrice).reversed()
     );
-    private final Collection<Order> asks = new TreeSet<>(
+    private final SortedSet<Order> asks = new TreeSet<>(
         Comparator.comparing(Order::getPrice)
     );
 
