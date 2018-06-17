@@ -25,7 +25,7 @@ mvn clean install
 
 ## How to setup
 
-In order to use order-book you should instatiate MarketService object:
+In order to use order-book you should instatiate MarketApp object:
 
 ```java
 final MarketApp marketApp = new MarketApp(new Market(), new OrderParser());
